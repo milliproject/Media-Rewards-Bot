@@ -230,3 +230,23 @@ renderTasks();
 </script>
 </body>
 </html>
+<div class="video-card">
+  <h3>🎬 د ویډیو برخه</h3>
+  <p>زموږ د YouTube ویډیو</p>
+
+  <iframe
+    width="100%"
+    height="220"
+    src="https://www.youtube.com/embed/vEb_6i-s-YU"
+    title="زموږ د YouTube ویډیو"
+    style="border:0; border-radius:12px;"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen>
+  </iframe>
+
+  <a href="https://youtu.be/vEb_6i-s-YU"
+     target="_blank"
+     rel="noopener">
+    ▶️ ویډیو په YouTube کې وګورئ
+  </a>
+</div>
