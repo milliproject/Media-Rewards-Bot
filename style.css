@@ -1,0 +1,16 @@
+*{box-sizing:border-box}
+body{margin:0;padding:16px;background:#090909;color:#fff;font-family:Arial,sans-serif}
+header{text-align:center;color:#f5c542;padding:15px 0}
+nav{display:flex;flex-wrap:wrap;justify-content:center;gap:14px}
+nav a{color:#f5c542;text-decoration:none}
+h2{color:#f5c542;font-size:19px}
+.card{background:#191919;border:1px solid #59471b;border-radius:14px;padding:15px;margin:14px 0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.metric{background:#242424;padding:13px;border-radius:10px;text-align:center}
+.metric strong{display:block;color:#f5c542;font-size:21px;margin-top:8px}
+.task{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#202020;border-radius:10px;padding:13px;margin:9px 0}
+.task small{display:block;color:#aaa;margin-top:5px}
+.btn,button{display:inline-block;background:#f5c542;color:#111;border:0;border-radius:8px;padding:11px 13px;font-weight:bold;text-decoration:none;cursor:pointer}
+input{width:100%;padding:12px;margin:8px 0;background:#101010;color:white;border:1px solid #555;border-radius:8px}
+.note{font-size:12px;color:#aaa;line-height:1.6}
+@media(max-width:420px){body{padding:10px}.task{align-items:flex-start}.btn,button{padding:10px;font-size:13px}}
