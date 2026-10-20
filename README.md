@@ -1,4 +1,22 @@
+<div class="video-card">
+  <h3>🎬 د ویډیو برخه</h3>
+  <p>YouTube ویډیو</p>
 
+  <iframe
+    width="100%"
+    height="220"
+    src="https://www.youtube.com/embed/eWJKYE0UsoI"
+    title="YouTube Video"
+    allowfullscreen>
+  </iframe>
+
+  <a
+    href="https://youtu.be/eWJKYE0UsoI"
+    target="_blank"
+    rel="noopener">
+    ▶️ ویډیو په YouTube کې وګورئ
+  </a>
+</div>
 <!doctype html>
 <html lang="ps" dir="rtl">
 <head>
