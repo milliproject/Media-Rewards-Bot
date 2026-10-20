@@ -1,353 +1,161 @@
-# Media Rewards Bot
-
-Telegram Mini App for media tasks and referrals.
-
-- Telegram channel tasks
-- YouTube task
-- Referral links
-- Earnings dashboard
-- USDT BEP20 withdrawals
-- Minimum withdrawal: $0.15
-- Reward per task: $0.002
 
 <!DOCTYPE html>
-<html lang="ps">
+<html lang="ps" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Media Rewards Bot</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Media Rewards</title>
 <style>
-:root {
-  --bg: #0b1220;
-  --panel: #141f31;
-  --panel2: #1b2a40;
-  --green: #25d695;
-  --text: #f3f7ff;
-  --muted: #9aabc1;
-  --line: #293950;
-}
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: Arial, sans-serif;
-}
-header {
-  padding: 22px 16px;
-  background: linear-gradient(135deg,#103b38,#12263b);
-  border-bottom: 1px solid var(--line);
-}
-.wrap { max-width: 760px; margin: auto; }
-.brand { font-size: 23px; font-weight: bold; }
-.brand span { color: var(--green); }
-header p { color: var(--muted); margin-bottom: 0; }
-main { padding: 18px 14px 40px; }
-.balance {
-  background: linear-gradient(135deg,#126b50,#174c5c);
-  border-radius: 18px;
-  padding: 22px;
-  margin-bottom: 18px;
-}
-.small { color: #c6eadd; font-size: 14px; }
-.amount { font-size: 36px; font-weight: bold; margin: 8px 0; }
-.stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.stat, .card {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 15px;
-  padding: 16px;
-}
-.stat strong { display: block; font-size: 21px; margin-top: 8px; }
-section { margin-top: 24px; }
-h2 { font-size: 19px; margin-bottom: 12px; }
-.task {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 10px;
-}
-.task-icon { font-size: 25px; }
-.task-info { flex: 1; min-width: 0; }
-.task-info strong { display: block; }
-.muted { color: var(--muted); font-size: 13px; margin-top: 5px; }
-button, .link-button {
-  border: 0;
-  border-radius: 10px;
-  padding: 11px 14px;
-  font-size: 14px;
-  font-weight: bold;
-  background: var(--green);
-  color: #06251b;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-}
-button:disabled { opacity: .55; cursor: not-allowed; }
-.secondary { background: var(--panel2); color: var(--text); }
-input, select {
-  display: block;
-  width: 100%;
-  background: #0c1727;
-  color: var(--text);
-  border: 1px solid var(--line);
-  padding: 13px;
-  margin: 9px 0 14px;
-  border-radius: 10px;
-  font-size: 15px;
-}
-label { color: var(--muted); font-size: 14px; }
-.full { width: 100%; }
-.notice {
-  padding: 12px;
-  border-radius: 10px;
-  background: #302b1c;
-  color: #f6d78b;
-  font-size: 13px;
-  line-height: 1.7;
-}
-#message { margin-top: 12px; color: var(--green); }
-.history-item {
-  padding: 12px 0;
-  border-bottom: 1px solid var(--line);
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-}
-footer {
-  text-align: center;
-  color: var(--muted);
-  padding: 22px 10px;
-  font-size: 12px;
-}
-[dir="rtl"] .task { text-align: right; }
+*{box-sizing:border-box}
+body{margin:0;background:#071710;color:white;font-family:Arial,sans-serif}
+header{background:#10462e;padding:20px;text-align:center}
+.logo{font-size:35px}
+main{max-width:700px;margin:auto;padding:14px}
+.card{background:#11291e;border:1px solid #28513c;border-radius:14px;padding:15px;margin:12px 0}
+h1,h2{margin:5px 0 14px}
+h1{color:#30e894}
+button{background:#2be58e;color:#062016;border:0;border-radius:9px;padding:11px;font-weight:bold;cursor:pointer}
+a{color:#2be58e;text-decoration:none}
+input,select{width:100%;padding:12px;margin:7px 0;background:#071710;color:white;border:1px solid #28513c;border-radius:8px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:#173729;border-radius:10px;padding:12px}
+.number{color:#2be58e;font-size:23px;font-weight:bold}
+.item{display:flex;align-items:center;gap:12px}
+.pic{width:48px;height:48px;object-fit:cover;border-radius:12px;background:#204936}
+.info{flex:1;min-width:0}
+.info p{margin:5px 0;color:#b8d4c3;font-size:12px;overflow-wrap:anywhere}
+.actions{display:flex;gap:7px;margin-top:12px;flex-wrap:wrap}
+.actions a,.actions button{flex:1;text-align:center}
+.secondary{background:#234b36;color:white}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tabs button{flex:1}
+footer{text-align:center;color:#a8c7b5;padding:20px;font-size:12px}
 </style>
 </head>
 <body>
 <header>
-  <div class="wrap">
-    <div class="brand">🎁 Media <span>Rewards</span></div>
-    <p>د ټاسکونو له لارې انعامونه ترلاسه کړه</p>
-  </div>
+ <div class="logo">💚</div>
+ <h1>MEDIA REWARDS</h1>
+ <p>ټاسکونه • ریفرل • انعامونه</p>
+ <select id="lang" onchange="languageChange()">
+  <option value="ps">پښتو</option>
+  <option value="fa">دری</option>
+  <option value="en">English</option>
+ </select>
 </header>
 
-<main class="wrap">
-  <div class="balance">
-    <div class="small">ستاسې د ډیمو بیلانس</div>
-    <div class="amount" id="balance">$0.000</div>
-    <div class="small">د هر ټاسک انعام: $0.002</div>
-  </div>
+<main>
+<section class="card">
+ <h2 id="welcome">👋 ښه راغلاست!</h2>
+ <div class="stats">
+  <div class="stat"><div id="balLabel">بیلانس</div><div class="number" id="balance">$0.000</div></div>
+  <div class="stat"><div>ټاسکونه</div><div class="number" id="count">0</div></div>
+  <div class="stat"><div>ریفرلونه</div><div class="number" id="refs">0</div></div>
+  <div class="stat"><div>ریفرل عاید</div><div class="number" id="refEarn">$0.000</div></div>
+ </div>
+ <small>یادونه: دا مخکینۍ ډیمو ده؛ بیلانس حقیقي پیسې نه دي.</small>
+</section>
 
-  <div class="stats">
-    <div class="stat">
-      <span class="muted">بشپړ شوي ټاسکونه</span>
-      <strong id="taskCount">0</strong>
-    </div>
-    <div class="stat">
-      <span class="muted">دعوتونه</span>
-      <strong id="refCount">0</strong>
-    </div>
-  </div>
+<section class="card">
+ <h2>📱 چینلونه او ټاسکونه</h2>
+ <div class="tabs">
+  <button onclick="show('all')">ټول</button>
+  <button onclick="show('Telegram')">Telegram</button>
+  <button onclick="show('YouTube')">YouTube</button>
+  <button onclick="show('WhatsApp')">WhatsApp</button>
+ </div>
+ <div id="tasks"></div>
+</section>
 
-  <section>
-    <h2>📢 Telegram Tasks — د ټیلیګرام دندې</h2>
-    <div class="card task">
-      <div class="task-icon">📣</div>
-      <div class="task-info">
-        <strong>زموږ ټیلیګرام چینل</strong>
-        <div class="muted">چینل وګوره او ګډون پکې وکړه</div>
-        <div class="muted">انعام: $0.002</div>
-      </div>
-      <a class="link-button" href="https://t.me/" target="_blank" rel="noopener">خلاص کړه</a>
-    </div>
-    <button class="full" onclick="completeTask('telegram')">د ټاسک بشپړول</button>
-  </section>
+<section class="card">
+ <h2>👥 ریفرل سیستم</h2>
+ <p>خپل لینک له ملګرو سره شریک کړه.</p>
+ <input id="refLink" readonly>
+ <button onclick="copyRef()">ریفرل لینک کاپي کړه</button>
+ <p class="muted">ریفرل عاید دلته یوازې ډیمو دی؛ حقیقي محاسبه سرور ته اړتیا لري.</p>
+</section>
 
-  <section>
-    <h2>▶️ YouTube Task — د یوټیوب دنده</h2>
-    <div class="card task">
-      <div class="task-icon">▶️</div>
-      <div class="task-info">
-        <strong>د یوټیوب ویډیو وګوره</strong>
-        <div class="muted">د ویډیو لینک باید وروسته تنظیم شي</div>
-        <div class="muted">انعام: $0.002</div>
-      </div>
-      <a class="link-button" href="https://youtube.com/" target="_blank" rel="noopener">خلاص کړه</a>
-    </div>
-    <button class="full" onclick="completeTask('youtube')">د ټاسک بشپړول</button>
-  </section>
+<section class="card">
+ <h2>💵 د پیسو ایستل</h2>
+ <p>USDT • BEP20 • لږ تر لږه $0.15</p>
+ <input id="amount" type="number" min=".15" step=".001" placeholder="د پیسو اندازه">
+ <input id="wallet" placeholder="عامه BEP20 والټ پته">
+ <button onclick="withdraw()">غوښتنه ثبت کړه</button>
+ <p id="withdrawMsg"></p>
+</section>
 
-  <section>
-    <h2>🔗 Referral System — د بلنې سیستم</h2>
-    <div class="card">
-      <p>خپل د بلنې لینک کاپي او له ملګرو سره یې شریک کړه.</p>
-      <input id="refLink" readonly value="د ډیمو بلنې لینک">
-      <button class="full" onclick="copyReferral()">📋 د لینک کاپي کول</button>
-      <p class="muted">د بلنې حقیقي شمېر د سرور له نښلولو وروسته محاسبه کېږي.</p>
-    </div>
-  </section>
+<section class="card">
+ <h2>📜 شرایط</h2>
+ <label><input type="checkbox" id="terms" style="width:auto"> ما شرایط ولوستل او منم چې دا ډیمو ده او حقیقي تادیه نه کوي.</label>
+</section>
 
-  <section>
-    <h2>💰 Earnings Dashboard — د عایداتو تاریخچه</h2>
-    <div class="card" id="history">
-      <p class="muted">تر اوسه د انعام تاریخچه نشته.</p>
-    </div>
-  </section>
-
-  <section>
-    <h2>💵 USDT BEP20 — د پیسو ایستل</h2>
-    <div class="card">
-      <div class="notice">
-        لږ تر لږه ایستل: $0.15<br>
-        دا یوازې د ډیمو فورم دی؛ پیسې نه لېږي.
-      </div>
-      <form id="withdrawForm">
-        <label for="wallet">ستاسې د USDT BEP20 والټ عام ادرس</label>
-        <input id="wallet" type="text" placeholder="د والټ عام ادرس ولیکه" required>
-        <label for="withdrawAmount">د ایستلو اندازه (USDT)</label>
-        <input id="withdrawAmount" type="number" min="0.15" step="0.01" placeholder="0.15" required>
-        <button class="full" type="submit">د ایستلو غوښتنه ثبت کړه</button>
-      </form>
-      <div id="message" role="status"></div>
-    </div>
-  </section>
-
-  <section>
-    <h2>⚙️ د ډیمو معلومات</h2>
-    <div class="card">
-      <p class="muted">دا نسخه معلومات یوازې په همدې براوزر کې ساتي. دا حقیقي حساب، حقیقي انعام یا تادیه نه ده.</p>
-      <button class="secondary full" onclick="resetDemo()">د ډیمو معلومات صفر کول</button>
-    </div>
-  </section>
+<footer>Media Rewards © 2026</footer>
 </main>
 
-<footer>Media Rewards Bot · Demo Version</footer>
-
 <script>
-const REWARD = 0.002;
-const MIN_WITHDRAW = 0.15;
-const STORAGE_KEY = "mediaRewardsDemoV1";
-
-let data = { balance: 0, completed: [], history: [], requests: [] };
-
-try {
-  const saved = localStorage.getItem(STORAGE_KEY);
-  if (saved) data = { ...data, ...JSON.parse(saved) };
-} catch (e) {}
-
-function save() {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  } catch (e) {}
-  render();
+const tasks=[
+ {name:"Sharitullah",type:"Telegram",url:"https://t.me/Sharitullah",img:"https://telegram.org/img/t_logo.png"},
+ {name:"Sharifullah2",type:"Telegram",url:"https://t.me/Sharifullah2",img:"https://telegram.org/img/t_logo.png"},
+ {name:"Afghanistan20000",type:"Telegram",url:"https://t.me/Afghanistan20000",img:"https://telegram.org/img/t_logo.png"},
+ {name:"Music Pashto",type:"Telegram",url:"https://t.me/MusicPashto",img:"https://telegram.org/img/t_logo.png"},
+ {name:"WStaskbot0",type:"Telegram",url:"https://t.me/WStaskbot0",img:"https://telegram.org/img/t_logo.png"},
+ {name:"eclqz",type:"Telegram",url:"https://t.me/eclqz",img:"https://telegram.org/img/t_logo.png"},
+ {name:"Afghanistan Telegram Group",type:"Telegram",url:"https://t.me/AfghanistanTelegramGroup",img:"https://telegram.org/img/t_logo.png"},
+ {name:"Sharitullah YouTube",type:"YouTube",url:"https://www.youtube.com/@Sharitullah1",img:"https://www.youtube.com/s/desktop/9c6e2b7b/img/favicon_144x144.png"},
+ {name:"WhatsApp Channel",type:"WhatsApp",url:"https://whatsapp.com/channel/0029VbAjTTJLNSZxsJvaOK3k",img:"https://static.whatsapp.net/rsrc.php/v4/yP/r/rYZqPCBaG70.png"}
+];
+let balance=0,count=0;
+const done=new Set();
+function show(filter){
+ document.getElementById("tasks").innerHTML=tasks.filter(t=>filter==="all"||t.type===filter).map((t,i)=>{
+ const id=tasks.indexOf(t);
+ return `<div class="card">
+ <div class="item">
+ <img class="pic" src="${t.img}" alt="${t.type}" onerror="this.style.display='none'">
+ <div class="info"><b>${t.name}</b><p>${t.type} • ډیمو انعام $0.002</p></div>
+ </div>
+ <div class="actions">
+ <a href="${t.url}" target="_blank" rel="noopener"><button>لینک خلاص کړه ↗</button></a>
+ <button class="secondary" onclick="complete(${id})" ${done.has(id)?"disabled":""}>${done.has(id)?"بشپړ شو":"ډیمو بشپړ"}</button>
+ </div></div>`;
+ }).join("");
 }
-
-function money(value) {
-  return "$" + Number(value || 0).toFixed(3);
+function complete(id){
+ if(!document.getElementById("terms").checked)return alert("لومړی شرایط ومنه.");
+ if(done.has(id))return;
+ if(!confirm("دا یوازې ډیمو ده، ګډون نه تاییدوي او حقیقي پیسې نه ورکوي. دوام ورکړې؟"))return;
+ done.add(id);count++;balance+=.002;
+ document.getElementById("balance").textContent="$"+balance.toFixed(3);
+ document.getElementById("count").textContent=count;
+ show(document.querySelector(".tabs button.active")?.dataset?.filter||"all");
 }
-
-function render() {
-  document.getElementById("balance").textContent = money(data.balance);
-  document.getElementById("taskCount").textContent = data.completed.length;
-  document.getElementById("refCount").textContent = "0";
-
-  const history = document.getElementById("history");
-  if (!data.history.length) {
-    history.innerHTML = '<p class="muted">تر اوسه د انعام تاریخچه نشته.</p>';
-  } else {
-    history.innerHTML = data.history.slice().reverse().map(item =>
-      '<div class="history-item"><span>' +
-      escapeHtml(item.label) +
-      '</span><strong>+' + money(item.amount) +
-      '</strong></div>'
-    ).join("");
-  }
-
-  document.querySelectorAll("[data-task]").forEach(button => {
-    const done = data.completed.includes(button.dataset.task);
-    button.disabled = done;
-    button.textContent = done ? "بشپړ شوی" : "د ټاسک بشپړول";
-  });
+function copyRef(){
+ const input=document.getElementById("refLink");
+ input.select();input.setSelectionRange(0,99999);
+ if(navigator.clipboard)navigator.clipboard.writeText(input.value).then(()=>alert("کاپي شو")).catch(()=>alert(input.value));
+ else alert(input.value);
 }
-
-function escapeHtml(value) {
-  return String(value).replace(/[&<>"']/g, char => ({
-    "&": "&amp;", "<": "&lt;", ">": "&gt;",
-    '"': "&quot;", "'": "&#39;"
-  }[char]));
+function withdraw(){
+ if(!document.getElementById("terms").checked)return alert("لومړی شرایط ومنه.");
+ const amount=Number(document.getElementById("amount").value);
+ const wallet=document.getElementById("wallet").value.trim();
+ const msg=document.getElementById("withdrawMsg");
+ if(!wallet)return msg.textContent="د والټ عامه پته ولیکه.";
+ if(amount<.15)return msg.textContent="لږ تر لږه $0.15 اړین دي.";
+ if(amount>balance)return msg.textContent="بیلانس کافي نه دی.";
+ msg.textContent="دا یوازې ډیمو ده؛ حقیقي تادیه نه ده لېږل شوې.";
 }
-
-function completeTask(task) {
-  if (data.completed.includes(task)) {
-    alert("دا ډیمو ټاسک مخکې بشپړ شوی دی.");
-    return;
-  }
-  data.completed.push(task);
-  data.balance = Math.round((data.balance + REWARD) * 1000) / 1000;
-  data.history.push({
-    label: task === "telegram" ? "Telegram task (demo)" : "YouTube task (demo)",
-    amount: REWARD
-  });
-  save();
-  alert("ډیمو انعام اضافه شو. دا حقیقي تادیه نه ده.");
+function languageChange(){
+ const l=document.getElementById("lang").value;
+ document.documentElement.lang=l;
+ document.documentElement.dir=l==="en"?"ltr":"rtl";
+ document.getElementById("welcome").textContent=
+ l==="en"?"Welcome!":l==="fa"?"خوش آمدید!":"👋 ښه راغلاست!";
+ document.getElementById("balLabel").textContent=
+ l==="en"?"Balance":l==="fa"?"موجودی":"بیلانس";
 }
-
-document.querySelectorAll("button[onclick^='completeTask']").forEach(button => {
-  const match = button.getAttribute("onclick").match(/completeTask\('([^']+)'\)/);
-  if (match) {
-    button.removeAttribute("onclick");
-    button.dataset.task = match[1];
-    button.addEventListener("click", () => completeTask(match[1]));
-  }
-});
-
-async function copyReferral() {
-  const field = document.getElementById("refLink");
-  field.value = "دا د ډیمو لینک دی؛ حقیقي شخصي لینک نه دی.";
-  try {
-    await navigator.clipboard.writeText(field.value);
-    alert("د ډیمو متن کاپي شو.");
-  } catch (e) {
-    field.select();
-    alert("متن انتخاب شو؛ د کاپي کولو اختیار وکاروه.");
-  }
-}
-
-document.getElementById("withdrawForm").addEventListener("submit", event => {
-  event.preventDefault();
-  const amount = Number(document.getElementById("withdrawAmount").value);
-  const wallet = document.getElementById("wallet").value.trim();
-  const message = document.getElementById("message");
-
-  if (!Number.isFinite(amount) || amount < MIN_WITHDRAW) {
-    message.textContent = "لږ تر لږه د ایستلو اندازه $0.15 ده.";
-    return;
-  }
-  if (amount > data.balance) {
-    message.textContent = "ستا د ډیمو بیلانس د دې اندازې لپاره کافي نه دی.";
-    return;
-  }
-  if (wallet.length < 20) {
-    message.textContent = "مهرباني وکړه د والټ ادرس وګوره.";
-    return;
-  }
-
-  data.requests.push({ amount, wallet, status: "demo" });
-  data.balance = Math.round((data.balance - amount) * 1000) / 1000;
-  save();
-  message.textContent = "د ډیمو غوښتنه ثبت شوه؛ هېڅ پیسې نه دي لېږل شوي.";
-  event.target.reset();
-});
-
-function resetDemo() {
-  if (!confirm("د ډیمو ټول معلومات صفر شي؟")) return;
-  data = { balance: 0, completed: [], history: [], requests: [] };
-  save();
-  document.getElementById("message").textContent = "";
-}
-
-render();
+document.getElementById("refLink").value=location.origin+location.pathname+"?ref=MEDIA-DEMO";
+show("all");
 </script>
 </body>
 </html>
-
