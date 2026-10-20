@@ -1,0 +1,140 @@
+
+<!DOCTYPE html>
+<html lang="ps">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Media Rewards</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:16px;background:#090909;color:#fff;font-family:Arial,sans-serif}
+header{text-align:center;color:#f5c542;padding:15px 0}
+nav{display:flex;flex-wrap:wrap;justify-content:center;gap:14px}
+nav a{color:#f5c542;text-decoration:none}
+h2{color:#f5c542;font-size:19px}
+.card{background:#191919;border:1px solid #59471b;border-radius:14px;padding:15px;margin:14px 0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.metric{background:#242424;padding:13px;border-radius:10px;text-align:center}
+.metric strong{display:block;color:#f5c542;font-size:21px;margin-top:8px}
+.task{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#202020;border-radius:10px;padding:13px;margin:9px 0}
+.task small{display:block;color:#aaa;margin-top:5px}
+.btn,button{display:inline-block;background:#f5c542;color:#111;border:0;border-radius:8px;padding:11px 13px;font-weight:bold;text-decoration:none;cursor:pointer}
+input{width:100%;padding:12px;margin:8px 0;background:#101010;color:white;border:1px solid #555;border-radius:8px}
+.note{font-size:12px;color:#aaa;line-height:1.6}
+</style>
+</head>
+<body>
+
+<header>
+<h1>✦ MEDIA REWARDS ✦</h1>
+<p>Follow • Subscribe • Invite • Earn</p>
+<nav>
+<a href="#dashboard">زما حساب</a>
+<a href="#tasks">کارونه</a>
+<a href="#referrals">دعوتونه</a>
+<a href="#withdraw">پیسې ایستل</a>
+</nav>
+</header>
+
+<section id="dashboard" class="card">
+<h2>📊 زما حساب</h2>
+<div class="grid">
+<div class="metric">ټول عاید<strong id="earned">$0.000</strong></div>
+<div class="metric">موجود بیلانس<strong id="balance">$0.000</strong></div>
+<div class="metric">دعوت شوي کسان<strong id="friends">0</strong></div>
+<div class="metric">بشپړ شوي کارونه<strong id="completed">0 / 9</strong></div>
+</div>
+<p class="note">دا نمونه ده؛ حقیقي حسابونه به د خوندي سرور له نښلولو وروسته فعال شي.</p>
+</section>
+
+<section id="tasks">
+<h2>📋 ټول رسنیز کارونه</h2>
+<p class="note">د هر تایید شوي کار انعام: $0.002. تکراري انعام باید د سرور له خوا بند شي.</p>
+<div id="taskList"></div>
+</section>
+
+<section id="referrals" class="card">
+<h2>👥 زما دعوتونه</h2>
+<p>هر کاروونکی به خپل ځانګړی دعوت لینک او د بلل شويو کسانو شمېر ولري.</p>
+<input id="refLink" readonly placeholder="شخصي لینک د Telegram اتصال وروسته">
+<button id="copyLink">د دعوت لینک کاپي کړه</button>
+<p class="note">د دعوتونو عاید او د هر کاروونکي شمېر به له Database څخه محاسبه کېږي.</p>
+</section>
+
+<section id="withdraw" class="card">
+<h2>💳 د USDT ایستل</h2>
+<p>لږ تر لږه ایستل: <b style="color:#f5c542">$0.15</b></p>
+<label for="amount">اندازه (USDT)</label>
+<input id="amount" type="number" min="0.15" step="0.001" placeholder="0.150">
+<label for="wallet">د BEP20 والټ عامه پته</label>
+<input id="wallet" placeholder="Wallet address">
+<button id="withdrawBtn">د ایستلو غوښتنه</button>
+<p id="message" class="note">حقیقي تادیات فعالې نه دي؛ دا تڼۍ اوس پیسې نه لېږي.</p>
+</section>
+
+<script>
+const REWARD = 0.002;
+
+const tasks = [
+ {platform:"Telegram",name:"چینل ۱ — Sharitullah",url:"https://t.me/Sharitullah",action:"Join"},
+ {platform:"Telegram",name:"چینل ۲ — Sharifullah2",url:"https://t.me/Sharifullah2",action:"Join"},
+ {platform:"Telegram",name:"چینل ۳ — Afghanistan20000",url:"https://t.me/Afghanistan20000",action:"Join"},
+ {platform:"Telegram",name:"چینل ۴ — MusicPashto",url:"https://t.me/MusicPashto",action:"Join"},
+ {platform:"Telegram",name:"چینل ۵ — WStaskbot0",url:"https://t.me/WStaskbot0",action:"Join"},
+ {platform:"Telegram",name:"چینل ۶ — eclqz",url:"https://t.me/eclqz",action:"Join"},
+ {platform:"Telegram",name:"چینل ۷ — Afghanistan Telegram Group",url:"https://t.me/AfghanistanTelegramGroup",action:"Join"},
+ {platform:"YouTube",name:"زموږ یوټیوب چینل",url:"https://www.youtube.com/@Sharitullah1",action:"Subscribe"},
+ {platform:"WhatsApp",name:"زموږ واټساپ چینل",url:"https://whatsapp.com/channel/0029VbAjTTJLNSZxsJvaOK3k",action:"Follow"}
+];
+
+const list = document.getElementById("taskList");
+
+tasks.forEach(task => {
+ const row = document.createElement("div");
+ row.className = "task";
+
+ const info = document.createElement("div");
+ const name = document.createElement("b");
+ name.textContent = task.name;
+
+ const detail = document.createElement("small");
+ detail.textContent = task.platform + " • Reward: $" + REWARD.toFixed(3);
+
+ info.append(name, detail);
+
+ const link = document.createElement("a");
+ link.className = "btn";
+ link.textContent = task.action;
+ link.href = task.url;
+ link.target = "_blank";
+ link.rel = "noopener noreferrer";
+
+ row.append(info, link);
+ list.append(row);
+});
+
+document.getElementById("copyLink").onclick = () => {
+ const field = document.getElementById("refLink");
+ if (!field.value) {
+  alert("د شخصي دعوت لینک لپاره Telegram Bot او سرور وصلول اړین دي.");
+  return;
+ }
+ navigator.clipboard.writeText(field.value);
+};
+
+document.getElementById("withdrawBtn").onclick = () => {
+ const amount = Number(document.getElementById("amount").value);
+ const wallet = document.getElementById("wallet").value.trim();
+ const message = document.getElementById("message");
+
+ if (!Number.isFinite(amount) || amount < 0.15 || !wallet) {
+  message.textContent = "لږ تر لږه $0.15 او د والټ عامه پته ولیکئ.";
+  return;
+ }
+
+ message.textContent =
+  "غوښتنه نه ده لېږل شوې. د حقیقي بیلانس تایید او خوندي تادیاتي سرور لا نه دي نښلول شوي.";
+};
+</script>
+</body>
+</html>
