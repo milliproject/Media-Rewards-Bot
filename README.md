@@ -250,3 +250,175 @@ renderTasks();
     ▶️ ویډیو په YouTube کې وګورئ
   </a>
 </div>
+
+<!DOCTYPE html>
+<html lang="ps" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Media Rewards Bot</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#0b1020;color:#fff;font-family:Arial,sans-serif}
+.container{max-width:480px;margin:auto;padding:18px}
+header{background:linear-gradient(135deg,#1768ff,#7438d8);padding:24px;border-radius:22px}
+h1{font-size:25px;margin:0 0 8px}
+p{color:#cbd5e1;line-height:1.7}
+.card{background:#151d30;border:1px solid #29344c;border-radius:18px;padding:18px;margin-top:16px}
+.balance{font-size:30px;font-weight:bold;color:#50e3a4;margin:10px 0}
+button,.btn{display:block;width:100%;border:0;border-radius:12px;padding:13px;margin-top:10px;background:#2775ff;color:white;font-size:15px;font-weight:bold;text-align:center;text-decoration:none;cursor:pointer}
+button:disabled{background:#475569;cursor:not-allowed}
+.channel{display:flex;align-items:center;gap:12px;background:#202b41;padding:12px;border-radius:12px;margin-top:10px}
+.logo{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:24px;background:#334155}
+.channel div:nth-child(2){flex:1}
+.small{font-size:12px;color:#9eacc4}
+.green{color:#50e3a4}
+input{width:100%;padding:12px;border-radius:10px;border:1px solid #3a4964;background:#0b1020;color:white;margin-top:8px}
+iframe{width:100%;height:220px;border:0;border-radius:12px;margin-top:10px}
+footer{text-align:center;color:#718096;padding:24px;font-size:12px}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+<h1>🎁 MEDIA REWARDS</h1>
+<p>Telegram · YouTube · WhatsApp Rewards</p>
+<div class="small">د کارونو له بشپړولو سره انعام ترلاسه کړئ</div>
+</header>
+
+<div class="card">
+<div>💰 زما بیلانس</div>
+<div class="balance" id="balance">$0.000</div>
+<div class="small">د Telegram ټول انعام: $0.002</div>
+</div>
+
+<div class="card">
+<h3>✈️ د Telegram لازمي کار</h3>
+<p>ټول لاندې چینلونه تعقیب کړئ. د ټولو چینلونو د بشپړولو انعام یو ځای یوازې $0.002 دی، نه د هر چینل لپاره جلا.</p>
+
+<div id="telegramList"></div>
+
+<button id="checkBtn" onclick="checkTasks()">د ټولو کارونو بشپړول تایید کړه</button>
+<div id="taskMessage" class="small"></div>
+</div>
+
+<div class="card">
+<h3>▶️ د YouTube ویډیو</h3>
+<p>دا برخه اختیاري ده؛ د Telegram انعام لپاره یې لیدل لازمي نه دي.</p>
+<iframe src="https://www.youtube.com/embed/vEb_6i-s-YU"
+title="YouTube video" allowfullscreen></iframe>
+<a class="btn" href="https://youtu.be/vEb_6i-s-YU" target="_blank" rel="noopener">ویډیو په YouTube کې وګورئ</a>
+</div>
+
+<div class="card">
+<h3>▶️ زموږ YouTube چینل</h3>
+<div class="channel">
+<div class="logo">▶️</div>
+<div>
+<strong>YouTube</strong>
+<div class="small">اختیاري کار</div>
+</div>
+</div>
+<a class="btn" href="https://www.youtube.com/@Sharitullah1" target="_blank" rel="noopener">چینل خلاص کړئ</a>
+</div>
+
+<div class="card">
+<h3>🟢 WhatsApp چینل</h3>
+<div class="channel">
+<div class="logo">🟢</div>
+<div>
+<strong>WhatsApp</strong>
+<div class="small">اختیاري کار</div>
+</div>
+</div>
+<a class="btn" href="https://whatsapp.com/channel/0029VbAjTTJLNSZxsJvaOK3k" target="_blank" rel="noopener">چینل خلاص کړئ</a>
+</div>
+
+<div class="card">
+<h3>👥 د ملګرو بلنه</h3>
+<p>خپل د بلنې لینک له ملګرو سره شریک کړئ.</p>
+<input id="refLink" readonly>
+<button onclick="copyReferral()">د بلنې لینک کاپي کړئ</button>
+<div id="refMessage" class="small"></div>
+</div>
+
+<div class="card">
+<h3>💵 د پیسو ایستل</h3>
+<p>دا د ډیمو برخه ده؛ واقعي تادیات لا نه دي فعال شوي.</p>
+<div class="small">لږ تر لږه ایستل: $0.15</div>
+<input id="wallet" placeholder="د USDT ترلاسه کولو عامه پته">
+<button onclick="withdraw()">د ایستلو غوښتنه</button>
+<div id="withdrawMessage" class="small"></div>
+</div>
+
+<footer>Media Rewards Bot · د انعامونو ډیمو نسخه</footer>
+</div>
+
+<script>
+const REWARD = 0.002;
+const channels = [
+ {name:"Sharitullah",url:"https://t.me/Sharitullah"},
+ {name:"Sharifullah2",url:"https://t.me/Sharifullah2"},
+ {name:"Afghanistan20000",url:"https://t.me/Afghanistan20000"},
+ {name:"MusicPashto",url:"https://t.me/MusicPashto"},
+ {name:"WStaskbot0",url:"https://t.me/WStaskbot0"},
+ {name:"eclqz",url:"https://t.me/eclqz"},
+ {name:"AfghanistanTelegramGroup",url:"https://t.me/AfghanistanTelegramGroup"}
+];
+
+let balance = Number(localStorage.getItem("demoBalance") || 0);
+const alreadyPaid = localStorage.getItem("telegramRewardClaimed") === "yes";
+
+function renderChannels(){
+ const list = document.getElementById("telegramList");
+ list.innerHTML = "";
+ channels.forEach((ch,i)=>{
+   list.innerHTML += `
+    <div class="channel">
+      <div class="logo">✈️</div>
+      <div>
+        <strong>${ch.name}</strong>
+        <div class="small">Telegram چینل ${i+1}</div>
+      </div>
+      <a href="${ch.url}" target="_blank" rel="noopener"
+         style="color:#7db5ff">خلاص</a>
+    </div>`;
+ });
+}
+function updateBalance(){
+ document.getElementById("balance").textContent =
+  "$" + balance.toFixed(3);
+}
+function checkTasks(){
+ const msg = document.getElementById("taskMessage");
+ if(localStorage.getItem("telegramRewardClaimed")==="yes"){
+   msg.textContent="دا انعام مخکې ثبت شوی؛ دویم ځل نه ورکول کېږي.";
+   return;
+ }
+ msg.textContent="یادونه: دا ډیمو نسخه نه شي تاییدولی چې ټول چینلونه مو واقعاً فالو کړي دي. د واقعي تایید لپاره سرور او Telegram Bot API ته اړتیا ده.";
+}
+function copyReferral(){
+ const link = location.href + "?ref=demo";
+ const input = document.getElementById("refLink");
+ input.value = link;
+ input.select();
+ try{
+   document.execCommand("copy");
+   document.getElementById("refMessage").textContent="لینک کاپي شو.";
+ }catch(e){
+   document.getElementById("refMessage").textContent="لینک انتخاب او کاپي کړئ.";
+ }
+}
+function withdraw(){
+ const wallet=document.getElementById("wallet").value.trim();
+ const msg=document.getElementById("withdrawMessage");
+ if(!wallet){msg.textContent="مهرباني وکړئ د ترلاسه کولو عامه پته ولیکئ.";return;}
+ if(balance<0.15){msg.textContent="بیلانس باید لږ تر لږه $0.15 وي.";return;}
+ msg.textContent="دا یوازې ډیمو دی؛ واقعي تادیات فعال نه دي.";
+}
+renderChannels();
+updateBalance();
+</script>
+</body>
+</html>
