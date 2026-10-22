@@ -1,0 +1,92 @@
+
+<!DOCTYPE html>
+<html lang="ps" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Media Rewards - Media Design</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#090909;color:white;font-family:Arial,sans-serif}
+main{max-width:600px;margin:auto;padding:16px}
+h1,h2{color:#f3c969}
+h1{text-align:center}
+p{color:#ccc}
+.card{background:#151515;border:1px solid #49391c;border-radius:16px;padding:14px;margin:14px 0}
+.item{display:flex;align-items:center;gap:12px;background:#202020;border-radius:12px;padding:12px;margin-top:10px;color:white;text-decoration:none}
+.logo{width:48px;height:48px;object-fit:cover;border-radius:12px;background:#292929}
+.details{flex:1}
+.small{font-size:12px;color:#bbb}
+.number{color:#f3c969}
+.videos{display:grid;gap:12px}
+.videos img{width:100%;display:block;aspect-ratio:16/9;object-fit:cover;border-radius:10px}
+</style>
+</head>
+<body>
+<main>
+<h1>🎁 MEDIA REWARDS</h1>
+<p style="text-align:center">د میډیا انځورونه</p>
+
+<section class="card">
+<h2>✈️ Telegram چینلونه</h2>
+<div id="channels"></div>
+</section>
+
+<section class="card">
+<h2>▶️ YouTube ویډیوګانې</h2>
+<div id="videos" class="videos"></div>
+</section>
+
+<section class="card">
+<h2>🟢 WhatsApp</h2>
+<a class="item" href="https://whatsapp.com/channel/0029VbAjTTJLNSZxsJvaOK3k">
+<img class="logo" src="https://cdn.simpleicons.org/whatsapp/25D366" alt="WhatsApp">
+<div class="details"><strong>WhatsApp چینل</strong><div class="small">رسمي نښه</div></div>
+<span>↗</span>
+</a>
+</section>
+
+<section class="card">
+<h2>👥 د ملګرو بلنه</h2>
+<div class="item">
+<img class="logo" src="https://cdn.simpleicons.org/telegram/26A5E4" alt="Telegram">
+<div class="details"><strong>دعوت شوي ملګري</strong><div class="small">د بلنې نښه</div></div>
+</div>
+</section>
+</main>
+
+<script>
+const channels=[
+["Sharitullah","https://t.me/Sharitullah"],
+["Sharifullah2","https://t.me/Sharifullah2"],
+["Afghanistan20000","https://t.me/Afghanistan20000"],
+["MusicPashto","https://t.me/MusicPashto"],
+["WStaskbot0","https://t.me/WStaskbot0"],
+["eclqz","https://t.me/eclqz"],
+["AfghanistanTelegramGroup","https://t.me/AfghanistanTelegramGroup"]
+];
+
+document.getElementById("channels").innerHTML=channels.map((c,i)=>`
+<a class="item" href="${c[1]}" target="_blank" rel="noopener">
+<img class="logo" src="https://cdn.simpleicons.org/telegram/26A5E4" alt="Telegram">
+<div class="details">
+<strong><span class="number">${i+1}.</span> ${c[0]}</strong>
+<div class="small">Telegram چینل ${i+1}</div>
+</div>
+<span>↗</span>
+</a>`).join("");
+
+const videos=[
+["ویډیو ۱","eWJKYE0UsoI","https://youtu.be/eWJKYE0UsoI"],
+["ویډیو ۲","vEb_6i-s-YU","https://youtu.be/vEb_6i-s-YU"],
+["ویډیو ۳","9Wwvje-WELE","https://youtube.com/shorts/9Wwvje-WELE"]
+];
+
+document.getElementById("videos").innerHTML=videos.map(v=>`
+<a class="item" href="${v[2]}" target="_blank" rel="noopener" style="display:block">
+<img src="https://img.youtube.com/vi/${v[1]}/hqdefault.jpg" alt="${v[0]}">
+<strong>${v[0]} ▶️</strong>
+</a>`).join("");
+</script>
+</body>
+</html>
